@@ -6,6 +6,7 @@ import PaymentComponent from './PaymentComponent';
 
 
 const Payment = ({route}) => {
+  console.log("pub",PUBLISHABLE_KEY)
   const total = route.params.total;
   const products = route.params.cart;
 

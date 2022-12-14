@@ -10,27 +10,27 @@ const PaymentComponent = ({total,products}) => {
 
     const subscribe = async () =>{
         try {
-        
             const res = await axios.post("http://172.31.42.22:5000/stripePay",{name,amount});
-            const data = await res.data;
-            const { clientSecret } = data;
-            console.log(clientSecret)
+            console.log(res.data);
+            const {clientSecret} = res.data;
+            console.log("secret",clientSecret)
+            console.log(amount)
             const initSheet = await initPaymentSheet({
-                merchantDisplayName: "Electronic Shop.",
+                merchantDisplayName: "Electronic",
                 paymentIntentClientSecret:clientSecret,
                 defaultBillingDetails: {
-                    name: 'Jane Doe',
+                    name: 'Jane',
                   }
             });
             if(initSheet.error) return Alert.alert(initSheet.error.message);
             const openPaymentSheet = await presentPaymentSheet({clientSecret});
-            if(openPaymentSheet.error) return Alert.alert(openPaymentSheet.error.message);
-            const order = await axios.post("http://172.31.42.22:5000/stripePay",
-            {
-                products:[],
-                amount:amount
-            }
-            );
+            if(openPaymentSheet.error) return console.log(openPaymentSheet.error.message);
+            // const order = await axios.post("http://172.31.42.22:5000/stripePay",
+            // {
+            //     products:[],
+            //     amount:amount
+            // }
+            // );
             const ordersData = order.data;
             console.log(ordersData)
         } catch (error) {
@@ -45,7 +45,7 @@ const PaymentComponent = ({total,products}) => {
         onChangeText={(value) => setName(value)}
         style={styles.TextInput}
          />
-         <Button title="Checkout" variant="primary" onPress={subscribe} />
+         <Button title="Checkout" variant="primary" onPress={(subscribe)} />
     </View>
   )
 }
